@@ -35,24 +35,28 @@ def generate_random_json():
     template['busPlateNumber'] = generate_random_bus_plate_number()
     template['lat'] = round(random.uniform(51.08, 51.16), 7)  # Latitude ranges from -90 to 90
     template['lon'] = round(random.uniform(71.37, 71.46), 7)  # Longitude ranges from -180 to 180
-    template['routeNumber'] = 43#str(random.randint(43, 45))  # Assuming route numbers range from 1 to 100
+    template['routeNumber'] = str(random.randint(43, 45))  # Assuming route numbers range from 1 to 100
 
     return json.dumps(template, indent=4)
 
-
-def insert_json_into_postgres(json_data):
-    # Modify these parameters with your PostgreSQL connection details
-    connection_params = {
-        'host': '127.0.0.1',
-        'database': 'bus',
-        'user': 'postgres',
-        'password': '123'
-    }
-
+connection_params = {
+    'host': '127.0.0.1',
+    'database': 'bus',
+    'user': 'postgres',
+    'password': '123'
+}
+def create_connection():
     try:
         # Connect to the PostgreSQL database
         connection = psycopg2.connect(**connection_params)
+        return connection
 
+    except Exception as e:
+        print(f"Error creating connection: {e}")
+        return None
+
+def insert_json_into_postgres(connection, json_data):
+    try:
         # Create a cursor object to execute SQL queries
         cursor = connection.cursor()
 
@@ -68,11 +72,11 @@ def insert_json_into_postgres(json_data):
         print(f"Error: {e}")
 
     finally:
-        # Close the cursor and connection
+        # Close the cursor (do not close the connection here)
         cursor.close()
-        connection.close()
-
+db_connection = create_connection()
+if db_connection:
 # Generate and print the random JSON entity
-for i in range(100):
-    random_json_data = generate_random_json()
-    insert_json_into_postgres(random_json_data)
+    for i in range(40):
+        random_json_data = generate_random_json()
+        insert_json_into_postgres(db_connection,random_json_data)

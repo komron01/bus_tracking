@@ -53,7 +53,7 @@ class BusManager:
             self.bus_locations = [
                 {'latitude': row[0], 'longitude': row[1], 'routeNumber': row[2]} for row in rows
             ]
-            print(self.bus_locations, flush=True)
+           
 
         except Exception as e:
             print(f"Error: {e}")
@@ -76,7 +76,6 @@ def index():
 @app.route('/get_bus_location')
 def get_bus_location():
     cur_location = bus_manager.get_current_location()
-    print(cur_location, flush=True)
     return jsonify(cur_location)
 
 if __name__ == '__main__':
