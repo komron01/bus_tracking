@@ -6,47 +6,13 @@
     <title>Bus Tracking</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 400px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div id="map"></div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <script>
-      var map = L.map('map').setView([51.1694, 71.4491], 13);  // Update coordinates and zoom level
-  
-      // Add the tile layer (you can replace this with your own map provider)
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
-  
-      // Example marker for the bus
-      var busMarker = L.marker([51.1694, 71.4491]).addTo(map);
-  
-      // Function to update bus location
-      function updateBusLocation(lat, lon) {
-          busMarker.setLatLng([lat, lon]);
-          map.panTo([lat, lon]);
-      }
-  
-      // Example: Update bus location every 5 seconds (replace this with your actual update mechanism)
-      setInterval(function() {
-          // Fetch bus location from the server and call updateBusLocation with new coordinates
-          // Example: Fetch data using fetch API
-          fetch('/get_bus_location')
-              .then(response => response.json())
-              .then(data => {
-                  updateBusLocation(data.latitude, data.longitude);
-              })
-              .catch(error => console.error('Error:', error));
-      }, 5000); // Update every 5 seconds
-  </script>
-  
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
