@@ -33,9 +33,9 @@ def generate_random_json():
 
     # Randomizing specific fields
     template['busPlateNumber'] = generate_random_bus_plate_number()
-    template['lat'] = round(random.uniform(-90, 90), 7)  # Latitude ranges from -90 to 90
-    template['lon'] = round(random.uniform(-180, 180), 7)  # Longitude ranges from -180 to 180
-    template['routeNumber'] = str(random.randint(1, 100))  # Assuming route numbers range from 1 to 100
+    template['lat'] = round(random.uniform(51.08, 51.16), 7)  # Latitude ranges from -90 to 90
+    template['lon'] = round(random.uniform(71.37, 71.46), 7)  # Longitude ranges from -180 to 180
+    template['routeNumber'] = 43#str(random.randint(43, 45))  # Assuming route numbers range from 1 to 100
 
     return json.dumps(template, indent=4)
 

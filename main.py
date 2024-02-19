@@ -1,23 +1,68 @@
 from flask import Flask, render_template, jsonify
+import psycopg2
 
 app = Flask(__name__)
 
 # Example class to manage bus location data
 class BusManager:
     def __init__(self):
-        self.bus_locations = [
-            {'latitude': 51.2088128, 'longitude': 51.3769565, 'bus_num': 43},
-            {'latitude': 51.209815, 'longitude': 51.377960, 'bus_num': 43},
-            {'latitude': 51.210810, 'longitude': 51.378950, 'bus_num': 43},
-            {'latitude': 51.211820, 'longitude': 51.379955, 'bus_num': 43},
-            {'latitude': 51.212805, 'longitude': 51.377965, 'bus_num': 43}
-        ]
+        # Initialize an empty list for bus locations
+        self.bus_locations = []
         self.current_index = 0
+        # Call the method to fetch bus locations from the database
+        self.fetch_bus_locations_from_db()
 
     def get_current_location(self):
+        if not self.bus_locations:
+            # Handle the case when the bus_locations list is empty
+            return {
+                'latitude': 0.0,
+                'longitude': 0.0,
+                'routeNumber': 'default'
+            }
+
         current_location = self.bus_locations[self.current_index]
         self.current_index = (self.current_index + 1) % len(self.bus_locations)
-        return current_location
+        return {
+            'latitude': current_location.get('latitude', 0.0),
+            'longitude': current_location.get('longitude', 0.0),
+            'routeNumber': current_location.get('routeNumber', 'default')
+        }
+
+    def fetch_bus_locations_from_db(self):
+        # Modify these parameters with your PostgreSQL connection details
+        connection_params = {
+            'host': '127.0.0.1',
+            'database': 'bus',
+            'user': 'postgres',
+            'password': '123'
+        }
+
+        try:
+            # Connect to the PostgreSQL database
+            connection = psycopg2.connect(**connection_params)
+
+            # Create a cursor object to execute SQL queries
+            cursor = connection.cursor()
+
+            # Fetch bus locations from the 'bus_data' table
+            cursor.execute("SELECT data->>'lat' AS latitude, data->>'lon' AS longitude, data->>'routeNumber' AS routeNumber FROM bus_data;")
+            rows = cursor.fetchall()
+
+            # Transform the data into a list of dictionaries
+            self.bus_locations = [
+                {'latitude': row[0], 'longitude': row[1], 'routeNumber': row[2]} for row in rows
+            ]
+            print(self.bus_locations, flush=True)
+
+        except Exception as e:
+            print(f"Error: {e}")
+
+        finally:
+            # Close the cursor and connection
+            cursor.close()
+            connection.close()
+
 
 # Create an instance of the BusManager
 bus_manager = BusManager()
@@ -31,6 +76,7 @@ def index():
 @app.route('/get_bus_location')
 def get_bus_location():
     cur_location = bus_manager.get_current_location()
+    print(cur_location, flush=True)
     return jsonify(cur_location)
 
 if __name__ == '__main__':
