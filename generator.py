@@ -77,6 +77,6 @@ def insert_json_into_postgres(connection, json_data):
 db_connection = create_connection()
 if db_connection:
 # Generate and print the random JSON entity
-    for i in range(40):
+    for i in range(100):
         random_json_data = generate_random_json()
         insert_json_into_postgres(db_connection,random_json_data)
