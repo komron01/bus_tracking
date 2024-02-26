@@ -16,10 +16,10 @@ class BusManager:
     def create_connection(self):
         # Modify these parameters with your PostgreSQL connection details
         connection_params = {
-            'host': '127.0.0.1',
+            'host': 'bus_tracking_db_1',
             'database': 'bus',
             'user': 'postgres',
-            'password': '123'
+            'password': '1234567'
         }
         # Connect to the PostgreSQL database
         return psycopg2.connect(**connection_params)
