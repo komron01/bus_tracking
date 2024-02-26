@@ -4,16 +4,20 @@ services:
   web:
     build:
       context: .
-      dockerfile: web/Dockerfile  # Путь к Dockerfile для веб-приложения
+      dockerfile: web/Dockerfile
     image: bus_flask
     ports:
       - "5000:5000"
     depends_on:
       - db
-  db:
+  generator:
     build:
       context: .
-      dockerfile: db/Dockerfile  # Путь к Dockerfile PostgreSQL
+      dockerfile: generator/Dockerfile
+    depends_on:
+      - db
+  db:
+    image: postgres
     environment:
       POSTGRES_DB: bus
       POSTGRES_USER: postgres
@@ -21,4 +25,4 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./path/to/data:/var/lib/postgresql/data  # Путь к каталогу, где будут храниться данные PostgreSQL
+      - ./path/to/data:/var/lib/postgresql/data
