@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 version: '3'
 
 services:
   web:
     build:
       context: .
-      dockerfile: ./web/Dockerfile  # Путь к Dockerfile для веб-приложения
+      dockerfile: web/Dockerfile  # Путь к Dockerfile для веб-приложения
     image: bus_flask
     ports:
       - "5000:5000"
@@ -14,7 +13,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: ./db/Dockerfile  # Путь к Dockerfile PostgreSQL
+      dockerfile: db/Dockerfile  # Путь к Dockerfile PostgreSQL
     environment:
       POSTGRES_DB: bus
       POSTGRES_USER: postgres
@@ -23,26 +22,3 @@ services:
       - "5432:5432"
     volumes:
       - ./path/to/data:/var/lib/postgresql/data  # Путь к каталогу, где будут храниться данные PostgreSQL
-=======
-version: '3'
-
-services:
-  web:
-    build: .
-    image: bus_flask
-    ports:
-      - "5000:5000"
-    depends_on:
-      - db
-  db:
-    build:
-      context: .  # Путь к каталогу, содержащему Dockerfile PostgreSQL
-    environment:
-      POSTGRES_DB: bus
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234567
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./path/to/data:/var/lib/postgresql/data  # Путь к каталогу, где будут храниться данные PostgreSQL
->>>>>>> 602ede9a9597281143d3ecb5d72dcac1c928bbf3
