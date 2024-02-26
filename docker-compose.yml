@@ -10,7 +10,7 @@ services:
       - db
   db:
     build:
-      context: ./path/to/postgres-dockerfile  # Путь к каталогу, содержащему Dockerfile PostgreSQL
+      context: .  # Путь к каталогу, содержащему Dockerfile PostgreSQL
     environment:
       POSTGRES_DB: bus
       POSTGRES_USER: postgres
