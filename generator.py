@@ -35,10 +35,10 @@ def generate_random_json():
     return json.dumps(template, indent=4)
 
 connection_params = {
-    'host': '127.0.0.1',
+    'host': 'bus_tracking_db_1',
     'database': 'bus',
     'user': 'postgres',
-    'password': '123'
+    'password': '1234567'
 }
 
 def create_connection():
