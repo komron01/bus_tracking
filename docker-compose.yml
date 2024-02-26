@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: bus_flask
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  db:
+    build:
+      context: ./path/to/postgres-dockerfile  # Путь к каталогу, содержащему Dockerfile PostgreSQL
+    environment:
+      POSTGRES_DB: bus
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./path/to/data:/var/lib/postgresql/data  # Путь к каталогу, где будут храниться данные PostgreSQL
